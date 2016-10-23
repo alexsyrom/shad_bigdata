@@ -17,6 +17,5 @@ import re
 
 for line in sys.stdin:
     words = list(map(''.join, re.findall(r'\"(.*?)\"|\[(.*?)\]|(\S+)', line)))
-    print(words)
-
-print("END")
+    if words[5] == "200":
+        print("{}\t{}".format(words[0], 1))
