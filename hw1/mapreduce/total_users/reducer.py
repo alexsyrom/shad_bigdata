@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
+from __future__ import division
+from __future__ import unicode_literals
+from builtins import bytes, chr
+from builtins import str
+from builtins import dict
+from builtins import object
+from builtins import range
+from builtins import map
+from builtins import zip
+from builtins import filter 
+
+import sys
+import re
+
+prev_ip = None
+counter = 0
+
+for line in sys.stdin:
+    words = line.split('\t')
+    cur_ip = words[0]
+    if cur_ip != prev_ip:
+        if counter > 0:
+            print(prev_ip, counter, sep='\t')
+        prev_ip = cur_ip
+        counter = 1
+    else:
+        counter += 1
+if counter > 0:
+    print(prev_ip, counter, sep='\t')
+
+
