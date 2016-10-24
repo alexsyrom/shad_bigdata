@@ -15,9 +15,12 @@ from builtins import filter
 
 import sys
 import re
+import codecs
 
 reload(sys)  
 sys.setdefaultencoding('utf8')
+
+sys.stdin = codecs.getreader('utf8')(sys.stdin, errors='ignore')
 
 for line in sys.stdin:
     words = list(map(''.join, re.findall(r'\"(.*?)\"|\[(.*?)\]|(\S+)', line)))
