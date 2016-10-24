@@ -22,7 +22,10 @@ sys.setdefaultencoding('utf8')
 
 sys.stdin = codecs.getreader('utf8')(sys.stdin, errors='ignore')
 
+
+counter = 0
+
 for line in sys.stdin:
-    words = list(map(''.join, re.findall(r'\"(.*?)\"|\[(.*?)\]|(\S+)', line)))
-    if words[5] == "200":
-        print("{}\t{}".format(words[0], 1))
+    counter += int(line)
+
+print(counter)

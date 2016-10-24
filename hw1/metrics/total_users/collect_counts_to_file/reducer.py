@@ -15,20 +15,17 @@ from builtins import filter
 
 import sys
 import re
+import codecs
 
 reload(sys)  
 sys.setdefaultencoding('utf8')
 
-prev_ip = None
+sys.stdin = codecs.getreader('utf8')(sys.stdin, errors='ignore')
+
+
 counter = 0
 
 for line in sys.stdin:
-    words = line.split('\t')
-    cur_ip = words[0]
-    if cur_ip != prev_ip:
-        prev_ip = cur_ip
-        counter += 1
-if counter > 0:
-    print(counter)
+    counter += int(line)
 
-
+print(counter)
