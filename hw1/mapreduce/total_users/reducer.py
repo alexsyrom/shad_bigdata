@@ -1,4 +1,5 @@
 #!/shared/anaconda/bin/python
+# encoding=utf8
 
 from __future__ import print_function
 from __future__ import division
@@ -14,6 +15,9 @@ from builtins import filter
 
 import sys
 import re
+
+reload(sys)  
+sys.setdefaultencoding('utf8')
 
 prev_ip = None
 counter = 0
