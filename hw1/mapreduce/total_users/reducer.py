@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/shared/anaconda/bin/python
 
 from __future__ import print_function
 from __future__ import division
@@ -22,13 +22,9 @@ for line in sys.stdin:
     words = line.split('\t')
     cur_ip = words[0]
     if cur_ip != prev_ip:
-        if counter > 0:
-            print(prev_ip, counter, sep='\t')
         prev_ip = cur_ip
-        counter = 1
-    else:
         counter += 1
 if counter > 0:
-    print(prev_ip, counter, sep='\t')
+    print(counter)
 
 
