@@ -29,6 +29,7 @@ import getpass
 import hashlib
 import random
 import struct
+import os.path
 
 from flask import Flask, request, abort, jsonify
 
@@ -58,16 +59,14 @@ def api_hw1():
 
     result = {}
     for date in iterate_between_dates(start_date, end_date):
-        total_hits = int(random.normalvariate(1000, 50))
-        total_users = int(random.normalvariate(100, 5))
-        browser_keys = ["Chrome", "Yandex Browser", "Firefox", "Safari", "Internet Explorer", "Other"]
-        browser_values = [20, 20, 20, 16, 13, 10, 1]
-        browser_values = [random.gammavariate(float(v), 1) for v in browser_values]
-        browser_values = [int(float(total_users) * v / sum(browser_values)) for v in browser_values]
-        result[date.strftime("%Y-%m-%d")] = {
-            "total_hits": total_hits,
+        str_date = date.strftime("%Y-%m-%d")
+        total_users = None
+        filename = "./metrics/total_users/results/" + str_date
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                total_users = int(f.readline())
+        result[str_date] = {
             "total_users": total_users,
-            "users_by_browser": dict(zip(browser_keys, browser_values)),
         }
 
     return jsonify(result)
