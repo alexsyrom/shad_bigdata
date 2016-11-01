@@ -5,7 +5,7 @@ hadoop jar /opt/hadoop/hadoop-streaming.jar \
 	-D stream.num.map.output.key.fields=2 \
 	-D mapreduce.job.output.key.comparator.class=org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedComparator \
 	-D mapreduce.partition.keypartitioner.options=-k1,1 \
-	-D mapreduce.partition.keycomparator.options="-k1 -k2n" \
+	-D mapreduce.partition.keycomparator.options="-k1,1 -k2,2n" \
 	-files mapper.py,reducer.py \
 	-input "/user/sandello/logs/access.log.2016-10-20" \
 	-output /user/asyromyatnikov/out \

@@ -36,10 +36,10 @@ for line in sys.stdin:
     elif time > prev_time + MAX_SESSION_TIME:
         session_count += 1
     else:
-        old_session_time = session_time
+        # old_session_time = session_time
         session_time += time - prev_time
-        if session_time < old_session_time:
-            print(session_time, old_session_time, time, prev_time)
+        # if session_time < old_session_time:
+        #    print(session_time, old_session_time, time, prev_time)
     prev_time = time
 
 if session_count > 0:
