@@ -15,34 +15,38 @@ from builtins import filter
 
 import sys
 import re
+import pandas as pd
 
 reload(sys)  
 sys.setdefaultencoding('utf8')
 
-MAX_SESSION_TIME = 30 * 60
+country_ip_limits = pd.read_csv("IP2LOCATION-LITE-DB1.CSV", header=None, names=['lower', 'upper', 'code', 'name'])
 
-prev_ip = None
-session_count = 0 
-session_time = 0
-prev_time = 0
 
-for line in sys.stdin:
-    words = line.split('\t')
-    cur_ip = words[0]
-    time = int(words[1])
-    if cur_ip != prev_ip:
-        session_count += 1
+def get_numeric_ip(ip):
+    byte_0, byte_1, byte_2, byte_3 = list(map(int, ip.split(".")))
+    dec = byte_0 << 24 | byte_1 << 16 | byte_2 << 8 | byte_3 << 0
+    return dec
+
+
+def get_country_by_ip(ip):
+    numeric_ip = get_numeric_ip(ip)
+    country = country_ip_limits[
+                (country_ip_limits.lower <= numeric_ip) &
+                (numeric_ip <= country_ip_limits.upper)].name.item()
+    return country
+
+
+def main():
+    prev_ip = None
+    for line in sys.stdin:
+        words = line.split('\t')
+        cur_ip = words[0]
+        if prev_ip != cur_ip:
+            country = get_country_by_ip(cur_ip)
+            print(country, sep='\t')
         prev_ip = cur_ip
-    elif time > prev_time + MAX_SESSION_TIME:
-        session_count += 1
-    else:
-        # old_session_time = session_time
-        session_time += time - prev_time
-        # if session_time < old_session_time:
-        #    print(session_time, old_session_time, time, prev_time)
-    prev_time = time
-
-if session_count > 0:
-    print(session_count, session_time, sep='\t')
 
 
+if __name__ == "__main__":
+    main()
