@@ -23,12 +23,23 @@ sys.setdefaultencoding('utf8')
 sys.stdin = codecs.getreader('utf8')(sys.stdin, errors='ignore')
 
 
-session_time = 0
-session_count = 0
+def main():
+    prev_country = None
+    country_users_counter = 0
+    for line in sys.stdin:
+        words = line.split('\t')
+        cur_country = words[0]
+        if cur_country != prev_country:
+            if country_users_counter > 0:
+                print(prev_country, country_users_counter, sep='\t')
+            country_users_counter = 1
+        else:
+            country_users_counter += 1
+        prev_country = cur_country
 
-for line in sys.stdin:
-    count, time = list(map(int, line.split('\t')))
-    session_count += count
-    session_time += time
+    if country_users_counter > 0:
+        print(prev_country, country_users_counter, sep='\t')
 
-print(session_count, session_time, sep='\t')
+
+if __name__ == '__main__':
+    main()
