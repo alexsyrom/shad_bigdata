@@ -36,11 +36,25 @@ from flask import Flask, request, abort, jsonify
 app = Flask(__name__)
 app.secret_key = "wow_wow_key"
 
+
+def users_by_country_type(f):
+    result = {}
+    for line in f:
+        words = line.split('\t')
+        country = words[0]
+        users_count = int(words[1])
+        result[country] = users_count
+    return result
+
+
 METRICS = ({'name': 'total_users',
-            'type': int},
+            'type': lambda f: int(f.readline())},
 
             {'name': 'average_session_time',
-             'type': float},
+             'type': lambda f: float(f.readline())},
+
+            {'name': 'users_by_country',
+             'type': users_by_country_type},
             )
 
 
@@ -72,7 +86,7 @@ def api_hw1():
             filename = "./metrics/{}/results/{}".format(metric['name'], str_date)
             if os.path.exists(filename):
                 with open(filename, 'r') as f:
-                    metric_value = metric['type'](f.readline())
+                    metric_value = metric['type'](f)
                 result[str_date][metric['name']] = metric_value
 
     return jsonify(result)

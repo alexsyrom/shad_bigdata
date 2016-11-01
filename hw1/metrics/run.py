@@ -32,7 +32,7 @@ import os.path
 import time
 
 CWD = os.path.dirname(os.path.realpath(__file__)) 
-METRICS = ("total_users", "average_session_time")
+METRICS = ("total_users", "average_session_time", "users_by_country")
 SLEEPING_TIME = 3 * 60 # 3 minutes
 SLEEPING_COUNT = 20 * 5 # 5 hours of waiting
 
