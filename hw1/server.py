@@ -81,7 +81,7 @@ def api_hw1():
     result = {}
     for date in iterate_between_dates(start_date, end_date):
         str_date = date.strftime("%Y-%m-%d")
-        result[str_date] = {metric['name']: None for metric in METRICS}
+        result[str_date] = {} 
         for metric in METRICS:
             filename = "./metrics/{}/results/{}".format(metric['name'], str_date)
             if os.path.exists(filename):
