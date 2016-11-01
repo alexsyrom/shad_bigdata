@@ -36,6 +36,13 @@ from flask import Flask, request, abort, jsonify
 app = Flask(__name__)
 app.secret_key = "wow_wow_key"
 
+METRICS = ({'name': 'total_users',
+            'type': int},
+
+            {'name': 'average_session_time',
+             'type': float},
+            )
+
 
 def iterate_between_dates(start_date, end_date):
     span = end_date - start_date
@@ -60,14 +67,13 @@ def api_hw1():
     result = {}
     for date in iterate_between_dates(start_date, end_date):
         str_date = date.strftime("%Y-%m-%d")
-        total_users = None
-        filename = "./metrics/total_users/results/" + str_date
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                total_users = int(f.readline())
-        result[str_date] = {
-            "total_users": total_users,
-        }
+        result[str_date] = {metric['name']: None for metric in METRICS}
+        for metric in METRICS:
+            filename = "./metrics/{}/results/{}".format(metric['name'], str_date)
+            if os.path.exists(filename):
+                with open(filename, 'r') as f:
+                    metric_value = metric['type'](f.readline())
+                result[str_date][metric['name']] = metric_value
 
     return jsonify(result)
 
