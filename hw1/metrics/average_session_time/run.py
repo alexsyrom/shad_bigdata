@@ -31,8 +31,8 @@ import os
 import os.path
 
 HDFS_SOURCE_PATH = "/user/sandello/logs/access.log."
-HDFS_DEST_PATH = "/user/asyromyatnikov/hw1/metrics/total_users/"
-LOCAL_DEST_PATH = os.path.expanduser("~/src/shad_bigdata/hw1/metrics/total_users/")
+HDFS_DEST_PATH = "/user/asyromyatnikov/hw1/metrics/average_session_time/"
+LOCAL_DEST_PATH = os.path.expanduser("~/src/shad_bigdata/hw1/metrics/average_session_time/")
 CWD = os.path.dirname(os.path.realpath(__file__)) 
 
 
