@@ -27,6 +27,6 @@ for line in sys.stdin:
     if words[5] == "200":
         date, sep, other = words[3].partition(':')
         time, sep, other = other.partition(' ')
-        hours, minutes, seconds = list(map(int, time.split(':')))
-        time_in_seconds = seconds + 60 * (minutes + 60 * hours)
-        print(words[0], time_in_seconds, sep='\t')
+        # hours, minutes, seconds = list(map(int, time.split(':')))
+        # time_in_seconds = seconds + 60 * (minutes + 60 * hours)
+        print(words[0], time, sep='\t')

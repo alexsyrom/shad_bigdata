@@ -4,10 +4,11 @@ hadoop jar /opt/hadoop/hadoop-streaming.jar \
 	-D mapreduce.job.maps=50 \
 	-D stream.num.map.output.key.fields=2 \
 	-D mapreduce.job.output.key.comparator.class=org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedComparator \
-	-D mapreduce.partition.keypartitioner.options=-k1,1 \
-	-D mapreduce.partition.keycomparator.options="-k1,1 -k2,2n" \
+	-D mapreduce.partition.keypartitioner.options="-k1,1" \
+	-D mapreduce.partition.keycomparator.options="-k1,2" \
 	-files mapper.py,reducer.py \
 	-input $1 \
 	-output $2 \
 	-mapper mapper.py \
 	-reducer reducer.py \
+	-partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner

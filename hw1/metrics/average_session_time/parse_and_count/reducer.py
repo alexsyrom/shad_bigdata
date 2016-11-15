@@ -29,7 +29,8 @@ prev_time = 0
 for line in sys.stdin:
     words = line.split('\t')
     cur_ip = words[0]
-    time = int(words[1])
+    hours, minutes, seconds = list(map(int, words[1].split(':')))
+    time = seconds + 60 * (minutes + 60 * hours)
     if cur_ip != prev_ip:
         session_count += 1
         prev_ip = cur_ip
@@ -40,6 +41,7 @@ for line in sys.stdin:
         session_time += time - prev_time
         # if session_time < old_session_time:
         #    print(session_time, old_session_time, time, prev_time)
+    prev_ip = cur_ip
     prev_time = time
 
 if session_count > 0:
