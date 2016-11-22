@@ -8,7 +8,7 @@ hadoop --config /home/agorokhov/conf.empty jar /opt/hadoop/hadoop-streaming.jar 
 	-D mapreduce.partition.keypartitioner.options=-k1,1 \
 	-D mapreduce.partition.keycomparator.options="-k1,2" \
 	-files mapper.py,reducer.py \
-	-input /hdfs/user/asyromyatnikov/access.log.dev \
+	-input /hdfs/user/asyromyatnikov/access.log.dev3 \
 	-output /hdfs/user/asyromyatnikov/out \
 	-mapper ./mapper.py \
 	-reducer ./reducer.py \
