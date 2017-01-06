@@ -77,6 +77,8 @@ def api_hw1():
         abort(400)
     start_date = datetime.datetime(*map(int, start_date.split("-")))
     end_date = datetime.datetime(*map(int, end_date.split("-")))
+    if end_date > datetime.datetime(2016, 12, 31):
+        end_date = datetime.datetime(2016, 12, 31)
 
     result = {}
     for date in iterate_between_dates(start_date, end_date):
