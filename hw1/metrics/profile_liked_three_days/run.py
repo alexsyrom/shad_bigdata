@@ -32,6 +32,9 @@ import os.path
 
 
 def run(date):
+    real_output_path = '/hdfs/user/asyromyatnikov/hw1/metrics/profile_liked_three_days/results/{}'.format(date)
+    if os.path.exists(real_output_path):
+        os.remove(real_output_path)
     subprocess.check_call(['spark-submit', 'metric.py', 
                             '--master', 'yarn-client', 
                             '--num-executors', '6', 

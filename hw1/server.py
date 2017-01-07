@@ -50,6 +50,10 @@ def users_by_country_type(f):
 METRICS = ({'name': 'total_users',
             'type': lambda f: int(f.readline())},
 
+            {'name': 'profile_liked_three_days',
+            'type': lambda f: int(f.readline())},
+
+
             {'name': 'average_session_time',
              'type': lambda f: float(f.readline())},
 
