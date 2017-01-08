@@ -33,6 +33,7 @@ if __name__ == '__main__':
     args, unknown = parser.parse_known_args()
  
     sc = SparkContext(appName="HW3NetCatStreamMetricsComputer")
+    sc.addFile('stream_metrics.py')
     ssc = StreamingContext(sc, 15)
     ssc.checkpoint("checkpointNetCatHW3StreamMetricsComputer")
 
