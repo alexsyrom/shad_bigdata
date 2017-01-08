@@ -52,7 +52,7 @@ def run(date):
 
 
 def main():
-    start_date = datetime.datetime(2016, 10, 10) 
+    start_date = datetime.datetime(2016, 12, 05) 
     end_date = datetime.datetime(2017, 01, 06) 
     for date in iterate_between_dates(start_date, end_date):
         run(date.strftime("%Y-%m-%d"))
