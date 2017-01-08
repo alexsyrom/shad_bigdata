@@ -23,6 +23,8 @@ import os
 import sys
 import collections
 
+KEYS = ("n15", "n60", "total")
+
 
 def update_function(new_values, state):
     if state is None:
@@ -32,7 +34,24 @@ def update_function(new_values, state):
 
 def print_counts(rdd):
     counts = collections.Counter(rdd.collectAsMap())
+    for key in KEYS:
+        counts[key] = counts[key]
     print("15_second_count={n15}; 60_second_count={n60}; total_count={total};".format(**counts))
+
+
+def run(ssc, lines):
+    parsed_lines = lines.map(lambda line: list(map(''.join, re.findall(r'\"(.*?)\"|\[(.*?)\]|(\S+)', line))))
+    unsuccessful_queries = parsed_lines.filter(lambda words: words[5] != '200')
+    n15_second_count = unsuccessful_queries.count()
+    n60_second_count = unsuccessful_queries.countByWindow(60, 15)
+    total_count = n15_second_count.map(lambda x: ('total', x)).updateStateByKey(update_function)
+    counts = ssc.union(n15_second_count.map(lambda x: ('n15', x)),
+                       n60_second_count.map(lambda x: ('n60', x)),
+                       total_count)
+    counts.foreachRDD(print_counts)
+
+    ssc.start()
+    ssc.awaitTermination()
 
 
 if __name__ == '__main__':
@@ -51,15 +70,4 @@ if __name__ == '__main__':
 
     kvs = KafkaUtils.createStream(ssc, args.zookeeper, "consumer-HW3StreamMetricsComputer", {args.topic: 4})
     lines = kvs.map(lambda x: x[1])
-    parsed_lines = lines.map(lambda line: list(map(''.join, re.findall(r'\"(.*?)\"|\[(.*?)\]|(\S+)', line))))
-    unsuccessful_queries = parsed_lines.filter(lambda words: words[5] != '200')
-    n15_second_count = unsuccessful_queries.count()
-    n60_second_count = unsuccessful_queries.countByWindow(60, 15)
-    total_count = n15_second_count.map(lambda x: ('total', x)).updateStateByKey(update_function)
-    counts = ssc.union(n15_second_count.map(lambda x: ('n15', x)),
-                       n60_second_count.map(lambda x: ('n60', x)),
-                       total_count)
-    counts.foreachRDD(print_counts)
-
-    ssc.start()
-    ssc.awaitTermination()
+    run(ssc, lines)
