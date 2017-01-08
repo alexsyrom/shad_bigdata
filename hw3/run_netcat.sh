@@ -2,7 +2,7 @@
 
 spark-submit \
       --master yarn-client \
-      --num-executors 2 \
+      --num-executors 4 \
       --executor-cores 1 \
       --executor-memory 2048m \
       stream_metrics_netcat.py \
