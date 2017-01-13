@@ -4,7 +4,7 @@ use asyromyatnikov;
 
 CREATE TABLE parsed_text_log (
 	    ip STRING,
-	    date TIMESTAMP,
+	    date_ts TIMESTAMP,
 	    url STRING,
 	    status SMALLINT,
 	    referer STRING,
