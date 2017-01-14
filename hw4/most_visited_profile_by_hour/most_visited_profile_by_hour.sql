@@ -19,8 +19,8 @@ from successful_log
 group by hour(date_ts), regexp_extract(url, '^/(id\\d+)', 1);
 
 select lpad(hit_hour, 2, '0') as h, username as u from
-(select *, row_number() over (partition by hit_hour order by counter asc, username asc) as rn
-from user_hit) t 
+(select *, row_number() over (partition by hit_hour order by counter desc, username asc) as rn
+from user_hit where username!='') t 
 where rn=1
 order by h asc;
 
